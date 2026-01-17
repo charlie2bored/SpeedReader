@@ -1,0 +1,154 @@
+.reading-pane {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  border-radius: 16px;
+  border: 2px solid #333;
+  margin-bottom: 30px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  min-width: 600px; /* Accommodate long words */
+  overflow: visible;
+}
+
+.reading-pane::before,
+.reading-pane::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #555, transparent);
+}
+
+.reading-pane::before {
+  top: 30%;
+}
+
+.reading-pane::after {
+  bottom: 30%;
+}
+
+.reading-pane.focus-mode {
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.word-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.word-display {
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1em;
+}
+
+.word-display.ready-state {
+  color: #cccccc;
+  font-size: 2.2rem;
+}
+
+/* Static Focus Layout - The red ORP letter NEVER moves */
+.word-prefix {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+  opacity: 0.8;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+.orp-focus {
+  flex: 0 0 1ch; /* Fixed width for stable anchor */
+  flex-shrink: 0; /* Never gets squeezed */
+  color: #ff4757;
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(255, 71, 87, 0.6);
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.word-suffix {
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
+  opacity: 0.8;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .reading-pane {
+    height: 160px;
+    margin-bottom: 25px;
+    min-width: 500px; /* Adjusted for tablet */
+  }
+
+  .word-container {
+    max-width: 600px;
+  }
+
+  .word-display {
+    font-size: 2.4rem;
+  }
+
+  .reading-pane::before,
+  .reading-pane::after {
+    left: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reading-pane {
+    height: 140px;
+    margin-bottom: 20px;
+    min-width: 400px; /* Adjusted for mobile */
+  }
+
+  .word-container {
+    max-width: 500px;
+  }
+
+  .word-display {
+    font-size: 2rem;
+  }
+
+  .reading-pane::before,
+  .reading-pane::after {
+    left: 12px;
+    right: 12px;
+  }
+}
