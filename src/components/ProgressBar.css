@@ -5,22 +5,22 @@
 .progress-bar {
   width: 100%;
   height: 14px;
-  background: #2a2a2a;
+  background: #333; /* Dark track */
   border-radius: 7px;
   margin-bottom: 15px;
   overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-  border: 1px solid #444;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  border: 1px solid #FFFFFF; /* 30% Secondary - White border */
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff4757, #ff3838);
+  background: linear-gradient(90deg, #FF3B30, #E03126); /* 10% Accent - Vibrant red */
   border-radius: 6px;
   width: 0%;
   transition: width 0.3s ease;
   position: relative;
-  box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.4);
 }
 
 .progress-fill::after {
@@ -52,26 +52,26 @@
   align-items: baseline;
   gap: 5px;
   font-size: 0.9rem;
-  color: #666;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 .words-read,
 .total-words {
   font-weight: bold;
-  color: #333;
+  color: #FF3B30; /* 10% Accent - Vibrant red */
 }
 
 .separator {
-  color: #999;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 .words-label {
-  color: #666;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 .time-remaining {
   font-size: 0.9rem;
-  color: #667eea;
+  color: #FF3B30; /* 10% Accent - Vibrant red */
   font-weight: 500;
 }
 

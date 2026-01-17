@@ -4,13 +4,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1a1a1a;
-  border-radius: 16px;
-  border: 2px solid #333;
+  background: #121212; /* 60% Primary - Deep black */
+  border-radius: 12px; /* Modern border radius */
+  border: 1px solid #FFFFFF; /* 30% Secondary - White border */
   margin-bottom: 30px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
   min-width: 600px; /* Accommodate long words */
   overflow: visible;
@@ -89,9 +87,9 @@
 .orp-focus {
   flex: 0 0 1ch; /* Fixed width for stable anchor */
   flex-shrink: 0; /* Never gets squeezed */
-  color: #ff4757;
+  color: #FF3B30; /* 10% Accent - Vibrant red */
   font-weight: 600;
-  text-shadow: 0 0 12px rgba(255, 71, 87, 0.6);
+  text-shadow: 0 0 12px rgba(255, 59, 48, 0.6);
   position: relative;
   z-index: 3;
   text-align: center;

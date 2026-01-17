@@ -3,43 +3,37 @@
   max-width: 1000px; /* Increased to accommodate wider reading pane */
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-  color: #333;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
   transition: all 0.3s ease;
 }
 
 .app.focus-mode {
   max-width: none;
   padding: 0;
-  background: #000;
-}
-
-/* Full screen background */
-body {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+  background: #121212; /* 60% Primary - Deep black */
 }
 
 header {
   text-align: center;
   margin-bottom: 30px;
-  color: white;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 header h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-weight: 600;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 header p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  opacity: 0.8;
   max-width: 600px;
   margin: 0 auto;
+  color: #FFFFFF; /* 30% Secondary - Pure white text */
 }
 
 main {
@@ -49,10 +43,11 @@ main {
 
 .input-section,
 .reading-section {
-  background: white;
-  border-radius: 12px;
+  background: #1E1E1E; /* 30% Secondary - Dark gray for cards */
+  border: 1px solid #FFFFFF; /* 30% Secondary - White border */
+  border-radius: 12px; /* Modern border radius */
   padding: 30px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;

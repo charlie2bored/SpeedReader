@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import TextInput from './components/TextInput'
 import ReadingPane from './components/ReadingPane'
 import SpeedControl from './components/SpeedControl'
 import PlaybackControls from './components/PlaybackControls'
 import ProgressBar from './components/ProgressBar'
 import { calculateORP, splitWordForORP, wpmToMs, getPunctuationPause } from './utils/orpUtils'
-import { usePreciseTimer } from './hooks/usePreciseTimer'
 import './App.css'
 
 function App() {
@@ -17,6 +16,9 @@ function App() {
   const [wpm, setWpm] = useState(300)
   const [isFocusMode, setIsFocusMode] = useState(false)
   const [startTime, setStartTime] = useState(null)
+
+  // Timer ref for word timing
+  const wordTimerRef = useRef(null)
 
   // Text processing function
   const processText = useCallback((inputText) => {
@@ -47,7 +49,7 @@ function App() {
     return baseInterval + punctuationPause
   }, [wpm, wpmToMs])
 
-  // Precise timer callback
+  // Precise timer callback - advances word and schedules next with correct timing
   const handleWordAdvance = useCallback(() => {
     setCurrentIndex(prev => {
       const next = prev + 1
@@ -55,29 +57,53 @@ function App() {
         setIsPlaying(false)
         return prev
       }
+
+      // Schedule next word with its specific timing
+      const nextWord = words[next]
+      const nextInterval = nextWord ? getWordInterval(nextWord) : wpmToMs(wpm)
+      wordTimerRef.current = setTimeout(() => {
+        handleWordAdvance()
+      }, nextInterval)
+
       return next
     })
-  }, [words.length])
-
-  // Initialize precise timer with current word's interval
-  const currentWord = words[currentIndex]
-  const currentInterval = currentWord ? getWordInterval(currentWord) : wpmToMs(wpm)
-
-  usePreciseTimer(handleWordAdvance, currentInterval, isPlaying && currentIndex < words.length)
+  }, [words, getWordInterval, wpmToMs])
 
   // Play/pause functionality
   const play = useCallback(() => {
-    if (words.length === 0) return
+    if (words.length === 0 || currentIndex >= words.length) return
+
+    // Clear any existing timer
+    if (wordTimerRef.current) {
+      clearTimeout(wordTimerRef.current)
+    }
+
     setIsPlaying(true)
     setStartTime(performance.now())
-  }, [words.length])
+
+    // Start timing for the current word
+    const currentWord = words[currentIndex]
+    const interval = currentWord ? getWordInterval(currentWord) : wpmToMs(wpm)
+
+    wordTimerRef.current = setTimeout(() => {
+      handleWordAdvance()
+    }, interval)
+  }, [words, currentIndex, getWordInterval, wpmToMs, handleWordAdvance])
 
   const pause = useCallback(() => {
     setIsPlaying(false)
+    if (wordTimerRef.current) {
+      clearTimeout(wordTimerRef.current)
+      wordTimerRef.current = null
+    }
   }, [])
 
   const reset = useCallback(() => {
     setIsPlaying(false)
+    if (wordTimerRef.current) {
+      clearTimeout(wordTimerRef.current)
+      wordTimerRef.current = null
+    }
     setCurrentIndex(0)
     setStartTime(null)
   }, [])
@@ -85,6 +111,15 @@ function App() {
   // Focus mode toggle
   const toggleFocusMode = useCallback(() => {
     setIsFocusMode(prev => !prev)
+  }, [])
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (wordTimerRef.current) {
+        clearTimeout(wordTimerRef.current)
+      }
+    }
   }, [])
 
   // Handle speed changes with optimized re-rendering
@@ -134,13 +169,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyPress)
   }, [isPlaying, words.length, play, pause, reset, toggleFocusMode, isFocusMode])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      // Timer cleanup is handled by the usePreciseTimer hook
-    }
-  }, [])
-
   // Memoize expensive calculations
   const progress = useMemo(() =>
     words.length > 0 ? (currentIndex / words.length) * 100 : 0,
@@ -155,6 +183,19 @@ function App() {
     if (words.length === 0 || currentIndex >= words.length) return null
     return getWordDisplayData(words[currentIndex])
   }, [words, currentIndex, getWordDisplayData])
+
+  // Calculate time remaining
+  const timeRemaining = useMemo(() => {
+    if (!isPlaying || words.length === 0) return null
+
+    const remainingWords = words.length - currentIndex
+    const avgWordTime = wpmToMs(wpm) // Base time, punctuation adds extra
+    const estimatedMs = remainingWords * avgWordTime
+    const minutes = Math.floor(estimatedMs / 60000)
+    const seconds = Math.floor((estimatedMs % 60000) / 1000)
+
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }, [isPlaying, words.length, currentIndex, wpm])
 
   return (
     <div className={`app ${isFocusMode ? 'focus-mode' : ''}`}>
