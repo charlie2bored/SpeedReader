@@ -136,6 +136,15 @@ function App() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e) => {
+      // Don't trigger shortcuts when user is typing in input fields
+      const activeElement = document.activeElement
+      const isInputFocused = activeElement &&
+        (activeElement.tagName === 'INPUT' ||
+         activeElement.tagName === 'TEXTAREA' ||
+         activeElement.contentEditable === 'true')
+
+      if (isInputFocused) return
+
       // Spacebar: play/pause
       if (e.code === 'Space') {
         e.preventDefault()
