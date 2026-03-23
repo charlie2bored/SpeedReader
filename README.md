@@ -1,16 +1,39 @@
-# React + Vite
+SpeedReader: A High-Precision RSVP Reading Tool
+SpeedReader is a web-based application designed for high-velocity, distraction-free reading. Built with React and Next.js, the tool leverages Rapid Serial Visual Presentation (RSVP) and Optimal Recognition Point (ORP) highlighting to enable users to process text at speeds of up to 1000 Words Per Minute (WPM).
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+By centering a single "focus" character in a monospaced layout, the app minimizes saccadic eye movements, allowing the brain to process information faster and with less fatigue.
 
-Currently, two official plugins are available:
+🚀 Key Features
+Adaptive WPM Control: Granular speed adjustment ranging from casual reading to extreme high-speed processing (up to 1000 WPM).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Optimal Recognition Point (ORP): A 3-span display logic (Prefix-Focus-Suffix) that keeps the red "focus letter" perfectly centered, guiding the eye's natural focal point.
 
-## React Compiler
+Intelligent Punctuation Pausing: Built-in logic to add slight delays on commas, periods, and semi-colons, mimicking natural reading cadence and improving comprehension.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+High-Precision Timing: Utilizes requestAnimationFrame and performance.now() to ensure frame-perfect word delivery without lag or stuttering.
 
-## Expanding the ESLint configuration
+Progress Tracking: Real-time progress bar to visualize how much content remains in the session.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠️ Technical Stack
+Frontend Framework: Next.js (React)
+
+State Management: React Hooks (useState, useEffect, useRef)
+
+Timing Engine: Web Performance API (requestAnimationFrame) for jitter-free rendering.
+
+Styling: Tailwind CSS for a minimalist, "Dark Mode" focused UI.
+
+Typography: Monospaced fonts to ensure consistent character spacing and ORP alignment.
+
+📖 How it Works
+The app implements a specialized algorithm to split and display text:
+
+Text Tokenization: Input text is sanitized and split into individual word arrays.
+
+Focus Point Calculation: For every word, the algorithm identifies the optimal focal character based on word length:
+
+Short words (1-5 chars): 2nd character.
+
+Medium words (6-9 chars): 3rd character.
+
+Long words (10+ chars): 4th character.
